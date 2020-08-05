@@ -1,0 +1,21 @@
+libname ordinal 'C:\Users\buzzlightyear\Desktop\LW';
+Data ord;
+set ordinal.ordwarm2;
+run;
+proc contents data = ord;
+run;
+proc logistic data = ord ;
+   model warm =  age ed /link = clogit;
+   output out = pred p=p xbeta=linp; 
+run;
+proc sort data = pred;
+  by age;
+run;
+
+goptions reset = all ;
+symbol i = join w= .1 ;
+proc gplot data = pred;
+   plot p*age=_level_;
+   plot linp*age=_level_;
+run;
+quit;
